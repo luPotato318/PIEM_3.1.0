@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # PIEM Tusker Power 3.1 — Operational Command
 
 Plataforma Django para inserção de estudantes do 3º ano no mercado de trabalho. A versão 3.1 completa a operação dos quatro portais RBAC e transforma o painel do gestor em uma central funcional de usuários, e-mails, cursos, inscrições e acolhimento.
@@ -24,10 +23,11 @@ Requer Python 3.11 ou superior.
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt / pip install psycopg2-binary --only-binary :all:
-Copy-Item .env.example .env
+Copy-Item .env.example.env
 python manage.py migrate
 python manage.py seed_data
-python manage.py runserver
+python manage.py runserver / python manage.py runserver 10.142.42.249:8000
+
 ```
 
 Ao atualizar uma instalação 3.0 existente, execute obrigatoriamente `python manage.py migrate`. A migração 0004 adiciona e-mails de contato e os novos campos operacionais de cursos sem apagar os registros atuais.
@@ -53,3 +53,15 @@ python manage.py check
 python manage.py test
 python manage.py makemigrations --check
 ```
+
+## Manutenções de Execuções
+rm -rf venv
+
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+python manage.py collectstatic --noinput
+
+Get-Content requirements.txt | ForEach-Object { pip install $_ }
+
+
+
+

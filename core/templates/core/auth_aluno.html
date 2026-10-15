@@ -5,9 +5,15 @@
 {% block content %}
 <div class="narrow" style="padding: 40px 0;">
   <div style="text-align: center; margin-bottom: 28px;">
-    <span class="eyebrow">Portal do Estudante &amp; Mercado</span>
+    <span class="eyebrow">{% if is_register %}Cadastro PIEM{% else %}Portal do Estudante &amp; Mercado{% endif %}</span>
     <h1 class="gradient-text">{{ title }}</h1>
-    <p style="color: var(--text-muted);">Acesse sua conta com seu CPF ou E-mail para acompanhar projetos e cursos.</p>
+    <p style="color: var(--text-muted);">
+      {% if is_register %}
+        Crie sua conta como estudante ou professor para acessar o PIEM.
+      {% else %}
+        Acesse sua conta com seu CPF ou E-mail para acompanhar projetos e cursos.
+      {% endif %}
+    </p>
   </div>
 
   <div class="card glass-card" style="padding: 40px; border-radius: var(--radius-lg);">
@@ -42,7 +48,7 @@
         </p>
       {% else %}
         <p style="font-size: 0.95rem; margin: 0;">
-          Ainda não possui conta? <a href="{% url 'register' %}" style="font-weight: 700;">Cadastre-se como Aluno ou Empresa</a>.
+          Ainda não possui conta? <a href="{% url 'register' %}" style="font-weight: 700;">Cadastre-se como estudante ou professor</a>.
         </p>
       {% endif %}
       

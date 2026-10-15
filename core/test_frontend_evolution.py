@@ -58,6 +58,10 @@ class PublicPageRenderingTests(TestCase):
                 response = self.client.get(reverse(route))
                 self.assertEqual(response.status_code, 200)
                 self.assertContains(response, '<meta name="robots" content="noindex,nofollow">', html=True)
+                if route == "register":
+                    self.assertContains(response, '<select name="perfil_acesso"')
+                    self.assertContains(response, '<option value="student">Estudante</option>', html=True)
+                    self.assertContains(response, '<option value="teacher">Professor</option>', html=True)
 
     def test_empty_home_shows_actual_zero_counts(self):
         response = self.client.get(reverse("home"))

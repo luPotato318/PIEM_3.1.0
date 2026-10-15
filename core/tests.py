@@ -111,6 +111,31 @@ class EnterpriseFlowTests(TestCase):
         user = User.objects.get(identifier="novo@example.com")
         self.assertTrue(user.check_password("uma-senha-segura"))
 
+    def test_registration_supports_student_and_teacher_profiles(self):
+        for role, identifier, portal in (
+            (User.Role.STUDENT, "novo-estudante@example.com", "dashboard"),
+            (User.Role.TEACHER, "novo-professor@example.com", "teacher_dashboard"),
+        ):
+            with self.subTest(role=role):
+                response = self.client.post(reverse("register"), {
+                    "nome": "Nova conta",
+                    "identifier": identifier,
+                    "perfil_acesso": role,
+                    "senha": "uma-senha-segura",
+                })
+                self.assertRedirects(response, reverse(portal))
+                self.assertEqual(User.objects.get(identifier=identifier).perfil_acesso, role)
+                self.client.logout()
+
+        response = self.client.post(reverse("register"), {
+            "nome": "Conta não permitida",
+            "identifier": "admin-nao-autorizado@example.com",
+            "perfil_acesso": User.Role.ADMIN,
+            "senha": "uma-senha-segura",
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(identifier="admin-nao-autorizado@example.com").exists())
+
     @override_settings(PHP_BRIDGE_SECRET="bridge-test-secret")
     def test_php_bridge_requires_shared_secret(self):
         url = reverse("php_bridge_tutor_api")

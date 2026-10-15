@@ -30,7 +30,13 @@ def authenticate_identifier(value, password):
 class RegistrationForm(forms.Form):
     nome = forms.CharField(max_length=150, widget=forms.TextInput(attrs={"placeholder": "Seu nome completo"}))
     identifier = forms.CharField(label="CPF ou e-mail", max_length=150, widget=forms.TextInput(attrs={"placeholder": "Seu CPF (apenas números) ou e-mail"}))
-    perfil_acesso = forms.ChoiceField(choices=[(User.Role.STUDENT, "Aluno")], widget=forms.HiddenInput())
+    perfil_acesso = forms.ChoiceField(
+        label="Perfil de acesso",
+        choices=[
+            (User.Role.STUDENT, "Estudante"),
+            (User.Role.TEACHER, "Professor"),
+        ],
+    )
     area_interesse = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={"placeholder": "Ex: Tecnologia da Informação, Psicologia..."}))
     senha = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Sua senha de acesso"}), min_length=8)
 
